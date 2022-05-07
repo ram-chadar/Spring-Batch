@@ -1,0 +1,69 @@
+-- MySQL dump 10.13  Distrib 5.6.23, for Win32 (x86)
+--
+-- Host: localhost    Database: batch
+-- ------------------------------------------------------
+-- Server version	5.5.50
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `batch_step_execution`
+--
+
+DROP TABLE IF EXISTS `batch_step_execution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `batch_step_execution` (
+  `STEP_EXECUTION_ID` bigint(20) NOT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `STEP_NAME` varchar(100) NOT NULL,
+  `JOB_EXECUTION_ID` bigint(20) NOT NULL,
+  `START_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `STATUS` varchar(10) DEFAULT NULL,
+  `COMMIT_COUNT` bigint(20) DEFAULT NULL,
+  `READ_COUNT` bigint(20) DEFAULT NULL,
+  `FILTER_COUNT` bigint(20) DEFAULT NULL,
+  `WRITE_COUNT` bigint(20) DEFAULT NULL,
+  `READ_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `WRITE_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `PROCESS_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `ROLLBACK_COUNT` bigint(20) DEFAULT NULL,
+  `EXIT_CODE` varchar(20) DEFAULT NULL,
+  `EXIT_MESSAGE` varchar(2500) DEFAULT NULL,
+  `LAST_UPDATED` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`STEP_EXECUTION_ID`),
+  KEY `JOB_EXECUTION_STEP_FK` (`JOB_EXECUTION_ID`),
+  CONSTRAINT `JOB_EXECUTION_STEP_FK` FOREIGN KEY (`JOB_EXECUTION_ID`) REFERENCES `batch_job_execution` (`JOB_EXECUTION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `batch_step_execution`
+--
+
+LOCK TABLES `batch_step_execution` WRITE;
+/*!40000 ALTER TABLE `batch_step_execution` DISABLE KEYS */;
+INSERT INTO `batch_step_execution` VALUES (1,2,'step1',5,'2022-05-07 17:48:25','2022-05-07 17:48:25','FAILED',0,10,0,0,0,0,0,1,'FAILED','java.lang.NullPointerException: Cannot invoke \"org.springframework.batch.item.database.ItemPreparedStatementSetter.setValues(Object, java.sql.PreparedStatement)\" because \"this.this$0.itemPreparedStatementSetter\" is null\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter$1.doInPreparedStatement(JdbcBatchItemWriter.java:190)\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter$1.doInPreparedStatement(JdbcBatchItemWriter.java:186)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:651)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:691)\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:186)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\r\n	at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\r\n	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:273)\r\n	at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:82)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep.doExecute(TaskletStep.java:258)\r\n	at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:208)\r\n	at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:152)\r\n	at org.springframework.batch.core.job.flow.JobFlowExecutor.executeStep(JobFlowExecutor.java:68)\r\n	at o','2022-05-07 17:48:25'),(2,2,'step1',6,'2022-05-07 17:54:43','2022-05-07 17:54:44','FAILED',0,10,0,0,0,0,0,1,'FAILED','org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [insert into trade(direction,year,day,country,commodity,transportMode,measure) values(?,?,?,?,?,?,?)]; nested exception is java.sql.BatchUpdateException: Unknown column \'day\' in \'field list\'\r\n	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:239)\r\n	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:70)\r\n	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1541)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:667)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:691)\r\n	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1034)\r\n	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.batchUpdate(NamedParameterJdbcTemplate.java:373)\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:182)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\r\n	at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\r\n	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:273)\r\n	at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:82)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.ja','2022-05-07 17:54:44'),(3,2,'step1',7,'2022-05-07 17:58:19','2022-05-07 17:58:19','FAILED',0,10,0,0,0,0,0,1,'FAILED','org.springframework.dao.InvalidDataAccessApiUsageException: No value supplied for the SQL parameter \'day\': Invalid property \'day\' of bean class [com.jbk.Trade]: Bean property \'day\' is not readable or has an invalid getter method: Does the return type of the getter match the parameter type of the setter?\r\n	at org.springframework.jdbc.core.namedparam.NamedParameterUtils.buildValueArray(NamedParameterUtils.java:361)\r\n	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate$1.setValues(NamedParameterJdbcTemplate.java:378)\r\n	at org.springframework.jdbc.core.JdbcTemplate.lambda$batchUpdate$4(JdbcTemplate.java:1042)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:651)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:691)\r\n	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1034)\r\n	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.batchUpdate(NamedParameterJdbcTemplate.java:373)\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:182)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\r\n	at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\r\n	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:273)\r\n	at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:82)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)','2022-05-07 17:58:19'),(4,2,'step1',8,'2022-05-07 17:59:53','2022-05-07 17:59:54','FAILED',0,10,0,0,0,0,0,1,'FAILED','org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [insert into trade(direction,year,weekday,country,commodity,transportMode,measure) values(?,?,?,?,?,?,?)]; nested exception is java.sql.BatchUpdateException: Unknown column \'commodity\' in \'field list\'\r\n	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:239)\r\n	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:70)\r\n	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1541)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:667)\r\n	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:691)\r\n	at org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:1034)\r\n	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.batchUpdate(NamedParameterJdbcTemplate.java:373)\r\n	at org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:182)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\r\n	at org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\r\n	at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\r\n	at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\r\n	at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:273)\r\n	at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:82)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\r\n	at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatT','2022-05-07 17:59:54'),(5,11146,'step1',9,'2022-05-07 18:04:09','2022-05-07 18:15:14','COMPLETED',11144,111438,0,111438,0,0,0,0,'COMPLETED','','2022-05-07 18:15:14');
+/*!40000 ALTER TABLE `batch_step_execution` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-05-08  0:02:49
